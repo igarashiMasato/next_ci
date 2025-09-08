@@ -2,7 +2,9 @@ name: CI/CD for Next.js
 
 on:
   push:
+    branches: [ feature/* ] # 各ブランチへの push で実行
   pull_request:
+    types: [closed]   # PR が閉じられた時 -> マージされた時
     branches: [ main ] # main 向けの PR のみ
 
 jobs:
@@ -19,8 +21,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+      
       - name: Install dependencies
-        run: npm install
+        run:  |
+          rm -f package-lock.json
+          npm install
 
       - name: Run ESLint
         run: npm run lint
@@ -29,6 +36,7 @@ jobs:
         run: npm test
 
   cd:
+    if: github.event.pull_request.merged == true  # マージされた場合のみ
     name: Deploy to Vercel
     runs-on: ubuntu-latest
     needs: ci
@@ -41,7 +49,7 @@ jobs:
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Vercel Personal Token
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}      # Vercel Org ID
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Vercel Project ID
+          vercel-org-id: ${{ secrets.ORG_ID }}      # Vercel Org ID
+          vercel-project-id: ${{ secrets.PROJECT_ID }} # Vercel Project ID
           working-directory: ./
-          scope: ${{ secrets.VERCEL_ORG_ID }}
+          scope: ${{ secrets.ORG_ID }}
