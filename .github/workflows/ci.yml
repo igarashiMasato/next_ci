@@ -25,7 +25,7 @@ jobs:
         run: npm cache clean --force
       
       - name: Install dependencies
-        run:  |
+        run: |
           rm -f package-lock.json
           rm -rf node_modules
           npm install
@@ -38,6 +38,7 @@ jobs:
 
       - name: Build project
         run: npm run build
+
   cd:
     if: github.event.pull_request.merged == true  # マージされた場合のみ
     name: Deploy to Vercel
@@ -51,7 +52,7 @@ jobs:
       - name: Setup Node.js (for build)
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
           cache: 'npm'
 
       - name: Install dependencies for deployment
@@ -63,8 +64,7 @@ jobs:
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Vercel Personal Token
-          vercel-org-id: ${{ secrets.ORG_ID }}      # Vercel Org ID
-          vercel-project-id: ${{ secrets.PROJECT_ID }} # Vercel Project ID
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}        # 必須
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}      # 必須
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # 必須
           working-directory: ./
-          scope: ${{ secrets.ORG_ID }}
