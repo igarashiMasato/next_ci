@@ -14,7 +14,7 @@ export default function Home() {
           priority
         />
         <h2>Welcome to Next.js!</h2>
-
+        <h2>Retry</h2>
         <div className={styles.ctas}>
           <a
             className={styles.primary}
