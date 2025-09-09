@@ -67,4 +67,5 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}        # 必須
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}      # 必須
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # 必須
+          vercel-args: '--prod'   # 本番に反映するため必須
           working-directory: ./
