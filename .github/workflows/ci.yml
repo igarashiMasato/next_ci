@@ -9,15 +9,16 @@ on:
 
 jobs:
   ci:
+    if: startsWith(github.ref, 'refs/heads/feature/*')  # featureブランチがpushされた時のみ実行
     name: Run Lint & Test
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -58,10 +59,10 @@ jobs:
         run: |
           npm cache clean --force
           rm -f package-lock.json
-          npm install --registry https://registry.npmjs.org/
+          npm install --legacy-peer-deps --registry https://registry.npmjs.org/
 
       - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v20
+        uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Vercel Personal Token
           vercel-org-id: ${{ secrets.ORG_ID }}      # Vercel Org ID
