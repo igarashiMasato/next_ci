@@ -9,7 +9,6 @@ on:
 
 jobs:
   ci:
-    if: startsWith(github.ref, 'refs/heads/feature/*')  # featureブランチがpushされた時のみ実行
     name: Run Lint & Test
     runs-on: ubuntu-latest
 
